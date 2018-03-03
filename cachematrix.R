@@ -1,15 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This function calculates the inverse of a matrix
+## and caches it for future use
 
-## Write a short comment describing this function
+## najeCacheMatrix create a matrix object with its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        inv <- NULL
+        set <- function(y) {
+                x <<- y
+                inv <<- NULL
+        }
+        get <- function() x
+        set_inv <- function(inv_in) inv <<- inv_in
+        get_inv <- function() inv
+        list(set = set, get = get,
+             set_inv = set_inv,
+             get_inv = get_inv)
 }
 
 
-## Write a short comment describing this function
+## cacheSolve either calculates the inverse of matrix 
+## or read the inverse from the cache if it already exists
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        inv <- x$get_inv()
+        if (!is.null(inv)) {
+                message("getting cached data")
+                return(inv)
+        }
+        mat <- x$get()
+        inv <- solve(mat)
+        x$set_inv(inv)
+        inv
 }
